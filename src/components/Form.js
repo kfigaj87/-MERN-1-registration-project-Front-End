@@ -1,4 +1,5 @@
 import axios from "axios";
+import config from "../config";
 import { useState } from "react";
 import Select from "./Select";
 import "./Form.css";
@@ -24,6 +25,61 @@ const Form = () => {
     ["cracow", "Kraków"],
   ];
 
+  const saveEvent = (eventObj) => {
+    axios
+      .post(config.api.url + "/events/add", eventObj, { mode: "cors" })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const resetForm = () => {
+    setName("");
+    setEvent({ key: "", val: "" });
+    setCity({ key: "", val: "" });
+    setErrors([]);
+  };
+
+  const validateForm = (e) => {
+    e.preventDefault();
+
+    let errorsValidate = [];
+
+    if (name.trim() === "") {
+      errorsValidate.push("Wpisz imię i Nazwosko");
+    }
+
+    if (event.key.trim() === "") {
+      errorsValidate.push("Wybierz Szkolenie");
+    }
+
+    if (city.key.trim() === "") {
+      errorsValidate.push("Wybierz Miasto");
+    }
+
+    if (errorsValidate.length > 0) {
+      setErrors(
+        errorsValidate.map((errorTxt, index) => {
+          return <li key={index}>{errorTxt}</li>;
+        })
+      );
+      return false;
+    }
+
+    const newEvent = {
+      name: name,
+      event: event,
+      city: city,
+    };
+
+    saveEvent(newEvent);
+
+    resetForm();
+  };
+
   const handleChangeName = (e) => {
     setName(e.target.value);
   };
@@ -44,7 +100,7 @@ const Form = () => {
 
   return (
     <div className="formWrapper">
-      <form action="#">
+      <form action="#" onSubmit={validateForm}>
         <div className="wrapper">
           <label htmlFor="name">Imię i Nazwisko</label>
           <input
@@ -77,8 +133,9 @@ const Form = () => {
         </div>
       </form>
 
-      <div className="errorWrapper"></div>
-      <ul className="errors"></ul>
+      <div className="errorWrapper">
+        <ul className="errors">{errors}</ul>
+      </div>
     </div>
   );
 };
