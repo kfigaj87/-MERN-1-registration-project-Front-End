@@ -4,7 +4,7 @@ import { useState } from "react";
 import Select from "./Select";
 import "./Form.css";
 
-const Form = () => {
+const Form = (props) => {
   const [name, setName] = useState("");
   const [event, setEvent] = useState({ key: "", val: "" });
   const [city, setCity] = useState({ key: "", val: "" });
@@ -32,7 +32,7 @@ const Form = () => {
         console.log(res);
       })
       .catch((err) => {
-        console.error(err);
+        props.getEvents();
       });
   };
 
@@ -99,7 +99,7 @@ const Form = () => {
   };
 
   return (
-    <div className="formWrapper">
+    <div className="formContainer">
       <form action="#" onSubmit={validateForm}>
         <div className="wrapper">
           <label htmlFor="name">Imię i Nazwisko</label>
@@ -129,7 +129,9 @@ const Form = () => {
           />
         </div>
         <div className="wrapper">
-          <button type="submit">Zapisz na szkolenie</button>
+          <button type="submit" className="submit">
+            Zapisz na szkolenie
+          </button>
         </div>
       </form>
 
