@@ -29,10 +29,10 @@ const Form = (props) => {
     axios
       .post(config.api.url + "/events/add", eventObj, { mode: "cors" })
       .then((res) => {
-        console.log(res);
+        props.getEvents();
       })
       .catch((err) => {
-        props.getEvents();
+        console.log(err);
       });
   };
 

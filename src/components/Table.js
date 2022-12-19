@@ -1,6 +1,7 @@
 import "./Table.css";
 
 const Table = ({ events, deleteEvent, ...rest }) => {
+  console.log(events);
   return (
     <table {...rest}>
       <thead>

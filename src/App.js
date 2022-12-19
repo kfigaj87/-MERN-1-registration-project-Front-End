@@ -16,9 +16,7 @@ function App() {
     axios
       .get(config.api.url + "/events")
       .then((res) => {
-        if (res.data.added) {
-          setEvents();
-        }
+        setEvents(res.data);
       })
       .catch((err) => {
         console.error(err);
